@@ -40,3 +40,10 @@ export const bookASeat = (chosenSeat: Seat, allSeats: Seats): boolean => {
 
   return true;
 };
+
+export const bookMultipleSeats = (
+  selectedSeats: Seat[],
+  allSeats: Seats
+): boolean => {
+  return selectedSeats.every((seat) => bookASeat(seat, allSeats));
+};
