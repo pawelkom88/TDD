@@ -19,23 +19,22 @@ export const theatreSeats: Seats = {
   J: ['J1', 'J2', 'J3', 'J4', 'J5', 'J6', 'J7', 'J8', 'J9', 'J10'],
 };
 
-const getSelectedRow = (selectedSeat: Seat): Rows =>
-  selectedSeat.charAt(0) as Rows;
+const getSelectedRow = (chosenSeat: Seat): Rows => chosenSeat.charAt(0) as Rows;
 
-export const isSeatTaken = (selectedSeat: Seat, allSeats: Seats): boolean => {
-  const selectedRow = getSelectedRow(selectedSeat);
-  return !allSeats[selectedRow].includes(selectedSeat);
+export const isSeatTaken = (chosenSeat: Seat, allSeats: Seats): boolean => {
+  const selectedRow = getSelectedRow(chosenSeat);
+  return !allSeats[selectedRow].includes(chosenSeat);
 };
 
-export const bookASeat = (selectedSeat: Seat, allSeats: Seats): boolean => {
-  if (isSeatTaken(selectedSeat, allSeats)) return false;
+export const bookASeat = (chosenSeat: Seat, allSeats: Seats): boolean => {
+  if (isSeatTaken(chosenSeat, allSeats)) return false;
 
-  const chosenRow = getSelectedRow(selectedSeat);
-  const rowSeats = allSeats[chosenRow];
+  const chosenRow = getSelectedRow(chosenSeat);
+  const seatsFromChosenRow = allSeats[chosenRow];
 
-  rowSeats.forEach((seat, index) => {
-    if (seat === selectedSeat) {
-      rowSeats[index] = 'X';
+  seatsFromChosenRow.forEach((seat, seatIndex) => {
+    if (seat === chosenSeat) {
+      seatsFromChosenRow[seatIndex] = 'X';
     }
   });
 
