@@ -5,7 +5,7 @@ import {
   calculatePercentageOfAvailableSeats,
   checkAdjectentSeatAvailability,
   countAvailableSeats,
-  isSeatTaken,
+  isSeatBooked,
   TheatreLayout,
 } from './theatre';
 
@@ -15,7 +15,7 @@ describe('Theatre Seat Management', () => {
       const theatreSeats = {
         A: ['A1', 'A2', 'A3'],
       } as TheatreLayout;
-      expect(isSeatTaken('A3', theatreSeats)).toBeFalsy();
+      expect(isSeatBooked('A3', theatreSeats)).toBeFalsy();
     });
   });
 
@@ -121,7 +121,7 @@ describe('Theatre Seat Management', () => {
   });
 
   describe('checkAdjectentSeatAvailability ', () => {
-    it('should check if adjecent seat to the booked one is free', () => {
+    it('should check if adjecent seat to the booked one is free or not', () => {
       const theatreSeats = {
         A: ['A1', 'A2', 'A3'],
         B: ['X', 'B2', 'B3'],

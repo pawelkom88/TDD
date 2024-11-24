@@ -24,7 +24,7 @@ const bookedSeatIdentifier = 'X';
 const getSelectedRowLetter = (chosenSeat: Seat): RowLetter =>
   chosenSeat.charAt(0) as RowLetter;
 
-export const isSeatTaken = (
+export const isSeatBooked = (
   chosenSeat: Seat,
   allSeats: TheatreLayout
 ): boolean => {
@@ -36,7 +36,7 @@ export const bookSeat = (
   chosenSeat: Seat,
   allSeats: TheatreLayout
 ): boolean => {
-  if (isSeatTaken(chosenSeat, allSeats)) return false;
+  if (isSeatBooked(chosenSeat, allSeats)) return false;
 
   const chosenRow = getSelectedRowLetter(chosenSeat);
   const seatsFromChosenRow = allSeats[chosenRow];
@@ -55,7 +55,7 @@ export const bookMultipleSeats = (
   allSeats: TheatreLayout
 ): boolean => {
   selectedSeats.forEach((selectedSeat) => {
-    if (isSeatTaken(selectedSeat, allSeats)) {
+    if (isSeatBooked(selectedSeat, allSeats)) {
       throw Error(`Seat ${selectedSeat} has already been booked`);
     }
   });
