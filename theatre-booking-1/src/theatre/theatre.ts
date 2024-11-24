@@ -91,3 +91,19 @@ export const calculateNumberOfAvailableSeatsInRow = (
   ).length;
   return availableSeats;
 };
+
+export const checkAdjectentSeatAvailability = (
+  chosenSeat: Seat,
+  allSeats: TheatreLayout
+) => {
+  // show message that:
+  // - adjecent to the left is available or not
+  // - adjecent to the right is available or not
+  // - both left and right are taken
+  // - both are available
+  // edge cases:
+  // * what if provided seat is first or last in the row ?
+  // * check number ? 1 or length ( 4 ) first
+  // * check if all row is booked as first if ?
+  // * what if provided seat is X === taken already ? do I want to check adjecent seats ?
+};

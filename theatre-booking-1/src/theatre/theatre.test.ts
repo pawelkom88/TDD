@@ -3,6 +3,7 @@ import {
   bookSeat,
   calculateNumberOfAvailableSeatsInRow,
   calculatePercentageOfAvailableSeats,
+  checkAdjectentSeatAvailability,
   countAvailableSeats,
   isSeatTaken,
   TheatreLayout,
@@ -118,6 +119,71 @@ describe('Theatre Seat Management', () => {
       expect(calculateNumberOfAvailableSeatsInRow('C', theatreSeats)).toBe(3);
     });
   });
-});
 
-// todo: add error messages for fun after you have done everything
+  describe('checkAdjectentSeatAvailability ', () => {
+    it.only('should check if adjecent seat to the booked one is free', () => {
+      const theatreSeats = {
+        A: ['A1', 'A2', 'A3'],
+        B: ['X', 'B2', 'B3'],
+        C: ['X', 'X', 'X'],
+        D: ['X', 'D2', 'X'],
+        E: ['X', 'X', 'E3'],
+      } as TheatreLayout;
+
+      // ---------- Row A --------- //
+      expect(checkAdjectentSeatAvailability('A1', theatreSeats)).toBe(
+        'Seats to the right is available for booking.'
+      );
+      expect(checkAdjectentSeatAvailability('A2', theatreSeats)).toBe(
+        'Seats to the left and right are available for booking.'
+      );
+      expect(checkAdjectentSeatAvailability('A3', theatreSeats)).toBe(
+        'Seats to the left is available for booking.'
+      );
+
+      // ---------- Row B --------- //
+      expect(checkAdjectentSeatAvailability('B1', theatreSeats)).toBe(
+        'Seats to the right is available for booking.'
+      );
+      expect(checkAdjectentSeatAvailability('B2', theatreSeats)).toBe(
+        'Seats to the right is available for booking.'
+      );
+      expect(checkAdjectentSeatAvailability('B3', theatreSeats)).toBe(
+        'Seats to the left is available for booking.'
+      );
+
+      // ---------- Row C --------- //
+      expect(checkAdjectentSeatAvailability('C1', theatreSeats)).toBe(
+        'This row is fully booked'
+      );
+      expect(checkAdjectentSeatAvailability('C2', theatreSeats)).toBe(
+        'This row is fully booked'
+      );
+      expect(checkAdjectentSeatAvailability('C3', theatreSeats)).toBe(
+        'This row is fully booked'
+      );
+
+      // ---------- Row D --------- //
+      expect(checkAdjectentSeatAvailability('D1', theatreSeats)).toBe(
+        'Seats to the right is available for booking.'
+      );
+      expect(checkAdjectentSeatAvailability('D2', theatreSeats)).toThrowError(
+        'Seats to the left and right are booked'
+      );
+      expect(checkAdjectentSeatAvailability('D3', theatreSeats)).toBe(
+        'Seats to the left is available for booking.'
+      );
+
+      // ---------- Row E --------- //
+      expect(checkAdjectentSeatAvailability('E1', theatreSeats)).toThrowError(
+        'Seat to the right is booked'
+      );
+      expect(checkAdjectentSeatAvailability('E2', theatreSeats)).toThrowError(
+        'Seat to the left is booked, but seat to the right is available'
+      );
+      expect(checkAdjectentSeatAvailability('E3', theatreSeats)).toBe(
+        'Seats to the left is available for booking.'
+      );
+    });
+  });
+});
