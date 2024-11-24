@@ -1,12 +1,12 @@
-type Rows = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J';
-type SeatNumbers = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
-type Seat = `${Rows}${SeatNumbers}` | 'X';
+type RowLetter = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J';
+type SeatIdentifier = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+type Seat = `${RowLetter}${SeatIdentifier}` | 'X';
 
-export type Seats = {
-  [Row in Rows]: Seat[];
+export type TheatreLayout = {
+  [Row in RowLetter]: Seat[];
 };
 
-export const theatreSeats: Seats = {
+export const initialTheatreLayout: TheatreLayout = {
   A: ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10'],
   B: ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'B10'],
   C: ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C10'],
@@ -19,22 +19,31 @@ export const theatreSeats: Seats = {
   J: ['J1', 'J2', 'J3', 'J4', 'J5', 'J6', 'J7', 'J8', 'J9', 'J10'],
 };
 
-const getSelectedRow = (chosenSeat: Seat): Rows => chosenSeat.charAt(0) as Rows;
+const bookedSeatIdentifier = 'X';
 
-export const isSeatTaken = (chosenSeat: Seat, allSeats: Seats): boolean => {
-  const selectedRow = getSelectedRow(chosenSeat);
+const getSelectedRowLetter = (chosenSeat: Seat): RowLetter =>
+  chosenSeat.charAt(0) as RowLetter;
+
+export const isSeatTaken = (
+  chosenSeat: Seat,
+  allSeats: TheatreLayout
+): boolean => {
+  const selectedRow = getSelectedRowLetter(chosenSeat);
   return !allSeats[selectedRow].includes(chosenSeat);
 };
 
-export const bookASeat = (chosenSeat: Seat, allSeats: Seats): boolean => {
+export const bookSeat = (
+  chosenSeat: Seat,
+  allSeats: TheatreLayout
+): boolean => {
   if (isSeatTaken(chosenSeat, allSeats)) return false;
 
-  const chosenRow = getSelectedRow(chosenSeat);
+  const chosenRow = getSelectedRowLetter(chosenSeat);
   const seatsFromChosenRow = allSeats[chosenRow];
 
   seatsFromChosenRow.forEach((seat, seatIndex) => {
     if (seat === chosenSeat) {
-      seatsFromChosenRow[seatIndex] = 'X';
+      seatsFromChosenRow[seatIndex] = bookedSeatIdentifier;
     }
   });
 
@@ -43,7 +52,42 @@ export const bookASeat = (chosenSeat: Seat, allSeats: Seats): boolean => {
 
 export const bookMultipleSeats = (
   selectedSeats: Seat[],
-  allSeats: Seats
+  allSeats: TheatreLayout
 ): boolean => {
-  return selectedSeats.every((seat) => bookASeat(seat, allSeats));
+  selectedSeats.forEach((selectedSeat) => {
+    if (isSeatTaken(selectedSeat, allSeats)) {
+      throw Error(`Seat ${selectedSeat} has already been booked`);
+    }
+  });
+
+  selectedSeats.forEach((selectedSeat) => bookSeat(selectedSeat, allSeats));
+  return true;
+};
+
+const getAllSeats = (seatsByRow: TheatreLayout): Seat[] =>
+  Object.values(seatsByRow).flat();
+
+export const countAvailableSeats = (seatsByRow: TheatreLayout): number =>
+  getAllSeats(seatsByRow).filter((seat) => seat !== bookedSeatIdentifier)
+    .length;
+
+export const calculatePercentageOfAvailableSeats = (
+  allSeats: TheatreLayout
+): number => {
+  const totalSeats = getAllSeats(allSeats).length;
+  const availableSeats = countAvailableSeats(allSeats);
+  const percentage = (availableSeats / totalSeats) * 100;
+
+  return Math.round(percentage);
+};
+
+export const calculateNumberOfAvailableSeatsInRow = (
+  row: RowLetter,
+  allSeats: TheatreLayout
+): number => {
+  const seatsInRow = allSeats[row];
+  const availableSeats = seatsInRow.filter(
+    (seat) => seat === bookedSeatIdentifier
+  ).length;
+  return availableSeats;
 };
