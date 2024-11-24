@@ -92,140 +92,14 @@ export const calculateNumberOfAvailableSeatsInRow = (
   return availableSeats;
 };
 
-// discr union ?
-type Message = {
-  rowBooked: 'This row is fully booked';
-  defaultMsg: '';
+const messages = {
+  bothAvailable: 'Seats to the left and right are available for booking.',
+  leftAvailable: 'Seat to the left is available for booking.',
+  rightAvailable: 'Seat to the right is available for booking.',
+  firstSeatBooked: 'Seat to the right is booked.',
+  lastSeatBooked: 'Seat to the left is booked.',
+  bothBooked: 'Both adjacent seats are booked.',
 };
-// export const checkAdjectentSeatAvailability = (
-//   chosenSeat: Seat,
-//   allSeats: TheatreLayout
-// ) => {
-//   // if(isSeatTaken(chosenSeat, allSeats))
-//   const chosenRow = getSelectedRowLetter(chosenSeat);
-//   // const isRowFullyBooked =
-//   //   calculateNumberOfAvailableSeatsInRow(chosenRow, allSeats) === 0;
-//   const seatsFromChosenRow = allSeats[chosenRow];
-
-//   // helper with index of ?
-//   const chosenSeatIndex = seatsFromChosenRow.indexOf(chosenSeat);
-//   const bookedSeatIndex = seatsFromChosenRow.indexOf(bookedSeatIdentifier);
-
-//   const seatToTheLeft = seatsFromChosenRow.indexOf(chosenSeat) - 1;
-//   const seatToTheRight = seatsFromChosenRow.indexOf(chosenSeat) + 1;
-//   // const areBothAdjecentSeatsAvailable = seatToTheLeft === 0 && seatToTheRight === 2;
-//   // const isSeatWithinBounds = () => seatToTheLeft >= 0 && seatToTheRight <= chosenRow.length - 1 ;
-
-//   // if (!isSeatWithinBounds()) return;
-//   // Check left seat availability
-//   const leftSeatAvailable =
-//     seatToTheLeft >= 0 && seatsFromChosenRow[seatToTheLeft] !== 'X';
-
-//   // Check right seat availability
-//   const rightSeatAvailable =
-//     seatToTheRight < seatsFromChosenRow.length &&
-//     seatsFromChosenRow[seatToTheRight] !== 'X';
-
-//   console.log(seatsFromChosenRow[seatToTheRight]);
-
-//   // B: ['X', 'B2', 'B3'],
-
-//   // Return messages based on seat availability
-//   if (leftSeatAvailable && rightSeatAvailable) {
-//     return 'Seats to the left and right are available for booking.';
-//   } else if (leftSeatAvailable) {
-//     return 'Seat to the left is available for booking.';
-//   } else if (rightSeatAvailable) {
-//     return 'Seat to the right is available for booking.';
-//   } else {
-//     return 'Both adjacent seats are booked.';
-//   }
-
-//   // switch map object ?
-//   // if (isRowFullyBooked) return 'This row is fully booked';
-//   // if (areBothAdjecentSeatsAvailable)
-//   //   return 'Seats to the left and right are available for booking.';
-
-//   // B: ['X', 'B2', 'B3'],
-//   // if ()
-//   //   return 'Seat to the right is available for booking.';
-//   // if ()
-//   //   return 'Seat to the left is available for booking.';
-
-//   // + Seats to the right is available for booking.
-//   // what if provided seat is a booked seat ?
-//   // show message that:
-//   // - adjecent to the left is available or not
-//   // - adjecent to the right is available or not
-//   // - both left and right are taken
-//   // - both are available
-//   // edge cases:
-//   // * what if provided seat is first or last in the row ?
-//   // * check number ? 1 or length ( 4 ) first
-// };
-
-// export const checkAdjectentSeatAvailability = (
-//   chosenSeat: Seat,
-//   allSeats: TheatreLayout
-// ) => {
-//   const chosenRowLetter = getSelectedRowLetter(chosenSeat);
-//   const seatsFromChosenRow = allSeats[chosenRowLetter];
-
-//   // Locate the index of the chosen seat
-//   let chosenSeatIndex = seatsFromChosenRow.indexOf(chosenSeat);
-
-//   // If the chosen seat is not found (e.g., booked as 'X'), fallback to its logical position
-//   if (chosenSeatIndex === -1) {
-//     chosenSeatIndex = seatsFromChosenRow.findIndex((seat) => seat === 'X');
-//   }
-
-//   // Calculate adjacent indices
-//   const seatToTheLeft = chosenSeatIndex - 1;
-//   const seatToTheRight = chosenSeatIndex + 1;
-
-//   // Check if adjacent seats are within bounds and available
-//   const leftSeatAvailable =
-//     seatToTheLeft >= 0 && seatsFromChosenRow[seatToTheLeft] !== 'X';
-
-//   const rightSeatAvailable =
-//     seatToTheRight < seatsFromChosenRow.length &&
-//     seatsFromChosenRow[seatToTheRight] !== 'X';
-
-//   const seatToTheLeftIndex = chosenSeatIndex - 1;
-//   const seatToTheRightIndex = chosenSeatIndex + 1;
-
-//   // Debugging to verify indices and values
-//   console.log('chosenSeatIndex:', chosenSeatIndex);
-//   console.log(
-//     'seatToTheLeft:',
-//     seatToTheLeftIndex,
-//     seatsFromChosenRow[seatToTheLeftIndex]
-//   );
-//   console.log(
-//     'seatToTheRight:',
-//     seatToTheRightIndex,
-//     seatsFromChosenRow[seatToTheRightIndex]
-//   );
-
-//   const isRowFullyBooked =
-//     calculateNumberOfAvailableSeatsInRow(chosenRowLetter, allSeats) === 0;
-
-//   if (isRowFullyBooked) return 'This row is fully booked';
-
-//   // switch or map object instead
-
-//   // D: ['X', 'D2', 'X'],
-
-//   if (leftSeatAvailable && rightSeatAvailable) {
-//     return 'Seats to the left and right are available for booking.';
-//   } else if (leftSeatAvailable) {
-//     return 'Seat to the left is available for booking.';
-//   } else if (rightSeatAvailable) {
-//     return 'Seat to the right is available for booking.';
-//   } else {
-//     return 'Both adjacent seats are booked.';
-//   }
-// };
 
 export const checkAdjectentSeatAvailability = (
   chosenSeat: Seat,
@@ -256,19 +130,6 @@ export const checkAdjectentSeatAvailability = (
   const rightSeatAvailable =
     seatToTheRightIndex < seatsFromChosenRow.length &&
     seatsFromChosenRow[seatToTheRightIndex] !== 'X';
-
-  // Debugging to verify indices and values
-  console.log('chosenSeatIndex:', chosenSeatIndex);
-  console.log(
-    'seatToTheLeft:',
-    seatToTheLeftIndex,
-    seatsFromChosenRow[seatToTheLeftIndex]
-  );
-  console.log(
-    'seatToTheRight:',
-    seatToTheRightIndex,
-    seatsFromChosenRow[seatToTheRightIndex]
-  );
 
   const isRowFullyBooked =
     calculateNumberOfAvailableSeatsInRow(chosenRowLetter, allSeats) === 0;
