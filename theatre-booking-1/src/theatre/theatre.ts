@@ -93,12 +93,40 @@ export const calculateNumberOfAvailableSeatsInRow = (
 };
 
 const messages = {
+  fullyBooked: 'This row is fully booked.',
   bothAvailable: 'Seats to the left and right are available for booking.',
   leftAvailable: 'Seat to the left is available for booking.',
   rightAvailable: 'Seat to the right is available for booking.',
   firstSeatBooked: 'Seat to the right is booked.',
   lastSeatBooked: 'Seat to the left is booked.',
   bothBooked: 'Both adjacent seats are booked.',
+};
+
+const getSeatAvailability = (
+  chosenSeat: Seat,
+  seatsFromChosenRow: Seat[]
+): Record<string, boolean> => {
+  const seatNumber = parseInt(chosenSeat.slice(1), 10);
+  const chosenSeatIndex = seatNumber - 1;
+
+  const seatToTheLeftIndex = chosenSeatIndex - 1;
+  const seatToTheRightIndex = chosenSeatIndex + 1;
+  const isAtStartOfRow = chosenSeatIndex === 0;
+  const isAtEndOfRow = chosenSeatIndex === 2;
+
+  const leftSeatAvailable =
+    seatToTheLeftIndex >= 0 && seatsFromChosenRow[seatToTheLeftIndex] !== 'X';
+
+  const rightSeatAvailable =
+    seatToTheRightIndex < seatsFromChosenRow.length &&
+    seatsFromChosenRow[seatToTheRightIndex] !== 'X';
+
+  return {
+    leftSeatAvailable,
+    rightSeatAvailable,
+    isAtStartOfRow,
+    isAtEndOfRow,
+  };
 };
 
 export const checkAdjectentSeatAvailability = (
@@ -108,46 +136,30 @@ export const checkAdjectentSeatAvailability = (
   const chosenRowLetter = getSelectedRowLetter(chosenSeat);
   const seatsFromChosenRow = allSeats[chosenRowLetter];
 
-  // ?? why it does not work ?
-  // const chosenSeatIndex = seatsFromChosenRow.indexOf(chosenSeat);
-
-  // Extract the numeric part of the chosen seat (e.g., "3" from "D3")
-  const seatNumber = parseInt(chosenSeat.slice(1), 10);
-
-  // Logical index of the chosen seat in a 0-based array
-  const chosenSeatIndex = seatNumber - 1;
-
-  // Calculate adjacent indices
-  const seatToTheLeftIndex = chosenSeatIndex - 1;
-  const seatToTheRightIndex = chosenSeatIndex + 1;
-  const firstSeatInRow = chosenSeatIndex === 0;
-  const lastSeatInRow = chosenSeatIndex === 2;
-
-  // Check if adjacent seats are within bounds and available
-  const leftSeatAvailable =
-    seatToTheLeftIndex >= 0 && seatsFromChosenRow[seatToTheLeftIndex] !== 'X';
-
-  const rightSeatAvailable =
-    seatToTheRightIndex < seatsFromChosenRow.length &&
-    seatsFromChosenRow[seatToTheRightIndex] !== 'X';
+  const {
+    leftSeatAvailable,
+    rightSeatAvailable,
+    isAtStartOfRow,
+    isAtEndOfRow,
+  } = getSeatAvailability(chosenSeat, seatsFromChosenRow);
 
   const isRowFullyBooked =
     calculateNumberOfAvailableSeatsInRow(chosenRowLetter, allSeats) === 0;
 
-  if (isRowFullyBooked) return 'This row is fully booked.';
-
-  // switch or map object ?
-  if (leftSeatAvailable && rightSeatAvailable) {
-    return 'Seats to the left and right are available for booking.';
-  } else if (leftSeatAvailable) {
-    return 'Seat to the left is available for booking.';
-  } else if (rightSeatAvailable) {
-    return 'Seat to the right is available for booking.';
-  } else if (firstSeatInRow && !rightSeatAvailable && !leftSeatAvailable) {
-    return 'Seat to the right is booked.';
-  } else if (lastSeatInRow && !leftSeatAvailable && !rightSeatAvailable) {
-    return 'Seat to the left is booked.';
-  } else {
-    return 'Both adjacent seats are booked.';
+  switch (true) {
+    case isRowFullyBooked:
+      return messages.fullyBooked;
+    case leftSeatAvailable && rightSeatAvailable:
+      return messages.bothAvailable;
+    case leftSeatAvailable:
+      return messages.leftAvailable;
+    case rightSeatAvailable:
+      return messages.rightAvailable;
+    case isAtStartOfRow && !rightSeatAvailable && !leftSeatAvailable:
+      return messages.firstSeatBooked;
+    case isAtEndOfRow && !leftSeatAvailable && !rightSeatAvailable:
+      return messages.lastSeatBooked;
+    default:
+      return messages.bothBooked;
   }
 };
