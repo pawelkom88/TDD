@@ -1,6 +1,6 @@
 import { ArrayReference, Row, SeatReference } from './types';
 
-const FIRST_ROW = 'A'.charCodeAt(0);
+export const FIRST_ROW = 'A'.charCodeAt(0);
 
 export const referenceOf = (seatReference: SeatReference): ArrayReference => {
   const { seat } = seatReference;

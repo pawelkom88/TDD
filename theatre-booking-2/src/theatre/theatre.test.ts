@@ -55,4 +55,28 @@ describe('theatre', () => {
   it('will throw an error if the seat number is out of range', () => {
     expect(() => theatre.allocate({ row: 'C', seat: 55 })).toThrow();
   });
+
+  it('will count spare seats in a given row', () => {
+    theatre.allocate({ row: 'C', seat: 1 });
+    theatre.allocate({ row: 'C', seat: 2 });
+
+    expect(theatre.countOfSpareSeatsByRow('C')).toBe(8);
+  });
+
+  it.only('will check first row that has at least 5 adjecent seats available and returns its letter', () => {
+    theatre.allocate({ row: 'A', seat: 1 });
+    theatre.allocate({ row: 'A', seat: 3 });
+    theatre.allocate({ row: 'A', seat: 5 });
+    theatre.allocate({ row: 'A', seat: 7 });
+
+    theatre.allocate({ row: 'B', seat: 1 });
+    theatre.allocate({ row: 'B', seat: 2 });
+
+    theatre.allocate({ row: 'C', seat: 1 });
+    theatre.allocate({ row: 'C', seat: 3 });
+    theatre.allocate({ row: 'C', seat: 5 });
+    theatre.allocate({ row: 'C', seat: 7 });
+
+    expect(theatre.checkAdjecentSeatsAvailability()).toBe('B');
+  });
 });
