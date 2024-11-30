@@ -4,7 +4,6 @@ const capitalize = (input: string): string =>
 const isInvalidInput = (str: any): boolean => {
   const isNumeric = /^\d+$/;
   return typeof str !== 'string' || str === '' || isNumeric.test(str);
-
 };
 const transformHyphenSeparated = (str: string): string => {
   const wordsArray = str.split('-');
