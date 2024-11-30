@@ -1,5 +1,6 @@
 // We will store employees
 // We can also store relationship between those employees e.g. manager -> employee
+// --------------------------------------------------------------------------------
 // Is non-existent employee not found ?
 // can we store a single employee and then find them ?
 // if there is no manager fot an employee  then we should get no relationship
