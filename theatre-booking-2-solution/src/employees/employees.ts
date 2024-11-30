@@ -15,9 +15,13 @@ export type Employee = {
 export const employees: Employee[] = [];
 
 export class EmployeeManagementSystem {
-  private employees: Employee[] = [];
+  public employees: Employee[] = [];
 
-  public getEmployeebyId(id: string): Employee | undefined {
+  public findEmployeeById(id: string): Employee | undefined {
     return this.employees.find((employee: Employee) => employee.id === id);
+  }
+
+  addEmployee(newEmployee: Employee) {
+    this.employees.push(newEmployee);
   }
 }
