@@ -7,23 +7,36 @@
 import { reversedKebabCase } from './reversedKebabCase';
 
 describe('String Transformation Tests', () => {
-  it('should leave an empty string untouched', () => {
-    expect(reversedKebabCase('')).toBe('');
-  });
+  const testCases = [
+    {
+      input: '',
+      expected: '',
+      description: 'should leave an empty string untouched',
+    },
+    {
+      input: 'pawel',
+      expected: 'pawel',
+      description: 'should leave a single capitalized word untouched: title',
+    },
+    {
+      input: 'Pawel',
+      expected: 'pawel',
+      description: 'should convert a single lowercase word to Title: title',
+    },
+    {
+      input: 'Pawel Mistrz',
+      expected: 'pawel-mistrz',
+      description: 'should convert words separated by space to paragraph-title',
+    },
+    {
+      input: 'Pawel    Mistrz',
+      expected: 'pawel-mistrz',
+      description:
+        'should filter spaces to convert Paragraph    Title to paragraph-title',
+    },
+  ];
 
-  it('should leave a single capitalized word untouched: title', () => {
-    expect(reversedKebabCase('pawel')).toBe('pawel');
-  });
-
-  it('should convert a single lowercase word to Title: title', () => {
-    expect(reversedKebabCase('Pawel')).toBe('pawel');
-  });
-
-  it('should convert words separated by space to paragraph-title', () => {
-    expect(reversedKebabCase('Pawel Mistrz')).toBe('pawel-mistrz');
-  });
-
-  it('should filter spaces to convert Paragraph    Title to paragraph-title', () => {
-    expect(reversedKebabCase('Pawel    Mistrz')).toBe('pawel-mistrz');
+  it.each(testCases)('$description', ({ input, expected }) => {
+    expect(reversedKebabCase(input)).toBe(expected);
   });
 });
