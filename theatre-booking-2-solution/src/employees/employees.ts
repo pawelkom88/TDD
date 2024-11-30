@@ -12,10 +12,8 @@ export type Employee = {
   roles: string[];
 };
 
-export const employees: Employee[] = [];
-
 export class EmployeeManagementSystem {
-  public employees: Employee[] = [];
+  employees: Employee[] = [];
 
   public findEmployeeById(id: string): Employee | undefined {
     return this.employees.find((employee: Employee) => employee.id === id);
