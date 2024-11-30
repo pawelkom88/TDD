@@ -4,24 +4,26 @@
 // words separated by - are converted Paragraph title -> paragraph-title  ✅
 // spaces are filtered Paragraph         Title -> paragraph-title  ✅
 
+import { reversedKebabCase } from './reversedKebabCase';
+
 describe('String Transformation Tests', () => {
   it('should leave an empty string untouched', () => {
-    // test logic for empty string case
+    expect(reversedKebabCase('')).toBe('');
   });
 
   it('should leave a single capitalized word untouched: title', () => {
-    // test logic for single capitalized word
+    expect(reversedKebabCase('pawel')).toBe('pawel');
   });
 
   it('should convert a single lowercase word to Title: title', () => {
-    // test logic for single lowercase word
+    expect(reversedKebabCase('Pawel')).toBe('pawel');
   });
 
   it('should convert words separated by space to paragraph-title', () => {
-    // test logic for words separated by hyphen
+    expect(reversedKebabCase('Pawel Mistrz')).toBe('pawel-mistrz');
   });
 
-  it('should filter spaces to convert Paragraph Title to paragraph-title', () => {
-    // test logic for spaces filtering
+  it('should filter spaces to convert Paragraph    Title to paragraph-title', () => {
+    expect(reversedKebabCase('Pawel    Mistrz')).toBe('pawel-mistrz');
   });
 });
