@@ -27,5 +27,7 @@ describe('Employee Management System', () => {
     expect(EMS.employees).toContain(newEmployee);
   });
 
-  it('should allow ');
+  it('should not find a relationship if there is no manager', () => {
+    expect(EMS.getManager('dev99')).toBeUndefined();
+  });
 });

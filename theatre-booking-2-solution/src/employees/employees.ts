@@ -1,3 +1,5 @@
+import { employee } from './readme';
+
 export type Location = {
   building: string;
   desk: number;
@@ -15,7 +17,11 @@ export type Employee = {
 export class EmployeeManagementSystem {
   employees: Employee[] = [];
 
-  public findEmployeeById(id: string): Employee | undefined {
+  getManager(id:string): any {
+    return this.employees.find((employee: Employee) =>  undefined)
+  }
+
+  findEmployeeById(id: string): Employee | undefined {
     return this.employees.find((employee: Employee) => employee.id === id);
   }
 
