@@ -1,5 +1,3 @@
-import { employee } from './readme';
-
 export type Location = {
   building: string;
   desk: number;
@@ -12,20 +10,36 @@ export type Employee = {
   location: Location;
   name: string;
   roles: string[];
+  managedBy?: string;
 };
 
 export class EmployeeManagementSystem {
-  employees: Employee[] = [];
+  private employees: Employee[] = [];
 
-  getManager(id:string): any {
-    return this.employees.find((employee: Employee) =>  undefined)
+  public get allEmployees(): Employee[] {
+    return this.employees;
+  }
+  public isManagedBy({
+    managerId,
+    managed,
+  }: {
+    managerId: string;
+    managed: string;
+  }): string | boolean {
+    const isManaged = this.employees.some(
+      (employee: Employee) =>
+        employee.managedBy === managerId && employee.id === managed
+    );
+
+    if (isManaged) return managerId;
+    return false;
   }
 
-  findEmployeeById(id: string): Employee | undefined {
+  public findEmployeeById(id: string): Employee | undefined {
     return this.employees.find((employee: Employee) => employee.id === id);
   }
 
-  addEmployee(newEmployee: Employee) {
+  public addEmployee(newEmployee: Employee) {
     this.employees.push(newEmployee);
   }
 }

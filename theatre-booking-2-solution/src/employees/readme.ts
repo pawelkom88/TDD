@@ -9,14 +9,3 @@
 // if we add a relationship between 2 existing employees can it be found ?
 // can we find the team under a specific manager ?
 
-export const employee: Employee = {
-  department: 'IT',
-  id: 'emp1',
-  location: {
-    building: 'IC1',
-    floor: 1,
-    desk: 27,
-  },
-  name: 'Bill Smith',
-  roles: ['developer', 'first aider'],
-};
